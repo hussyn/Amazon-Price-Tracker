@@ -3,37 +3,60 @@ const trackedItemController = require('../controllers/TrackedItemController');
 
 
 //Post a new item to track (link, phone number, target price)
-routes.post( '/trackedItem', (req, res )=> {
+routes.post( '/trackedItem', async (req, res )=> {
     const trackedItem = req.body;
-    trackedItemController.addTrackedItem(trackedItem);
-    res.send(req.body);
+    const addedTrackedItem = await trackedItemController.addTrackedItem(trackedItem);
+    
+    if(addedTrackedItem === null) {
+        return res.status(500).send({msg: "Failed to save tracked item" });
+    }
+    
+    return res.send(addedTrackedItem);
+        
 });
 
-routes.get('/trackedItem', (req, res) => {
-    const trackedItems = trackedItemController.getTrackedItems();
-    res.send(trackedItems);
+routes.get('/trackedItem', async (req, res) => {
+    const trackedItems = await trackedItemController.getTrackedItems();
+
+    if(trackedItems === null) {
+        return res.status(500).send({msg: "Failed to save tracked item" });
+    }
+    
+    return res.send(trackedItems);
 });
 
 //get specific tracked item
-routes.get('/trackedItem/:id', (req, res) => {
-    const trackedItem = trackedItemController.getTrackedItem(id);
-    res.send(trackedItem);
+routes.get('/trackedItem/:id', async (req, res) => {
+    const id = req.params.id;
+    const trackedItem = await trackedItemController.getTrackedItem(id);
+
+    if(trackedItem === null) {
+        return res.status(404).send({msg: "Failed to find tracked item" });
+    }
+    
+    return res.send(trackedItem);
 });
 
 //update specfiic tracked item
 routes.put('/trackedItem/:id', (req, res) => {
-    const updatedTrackedItem = req.body;
-    console.log(updatedTrackedItem);
+    const trackedItem = req.body;
     const id = req.params.id;
     
-    trackedItemController.updateTrackedItem(id, updatedTrackedItem);
+    const updatedTrackedItem = trackedItemController.updateTrackedItem(id, trackedItem);
+    if(updatedTrackedItem === null ){
+        return res.status(404).send({msg: "Failed to find and update tracked item" });
+    }
     return res.send(updatedTrackedItem);
 })
 
-routes.delete('/trackedItem/:id', (req, res) => {
+routes.delete('/trackedItem/:id', async (req, res) => {
     const id = req.params.id;
-    trackedItemController.deleteTrackedItem(id);
-    return res.send(id);
+    const deletedItem = await trackedItemController.deleteTrackedItem(id);
+
+    if(deletedItem === null ){
+        return res.status(404).send({msg: "Failed to find and delete tracked item" });
+    }
+    return res.send(deletedItem);
 })
 
 module.exports = routes;

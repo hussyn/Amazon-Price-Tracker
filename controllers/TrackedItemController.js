@@ -1,24 +1,58 @@
 const db = new (require("../db"))();
+const mongoose = require('mongoose');
+const TrackedItem = mongoose.model('TrackedItem');
 
-exports.getTrackedItems = () => {
-    return db.getTrackedItems();
+exports.getTrackedItems = async () => {
+    
+    try {
+        return await TrackedItem.find();
+    }
+    catch(err){
+        console.error(err)
+        return null;
+    }
 }
 
-exports.addTrackedItem = (trackedItem) => {
-    console.log(trackedItem);
-    db.addTrackedItem(trackedItem);
+exports.addTrackedItem = async (item) => {
+    const trackedItem = new TrackedItem(item);
+    try {
+        await trackedItem.save();
+        return trackedItem;
+    }
+    catch( err ){
+        console.error(err)
+        return null;
+    }
 }
 
 
-exports.getTrackedItem = (id) => {
-    return db.getTrackedItem(id);
+exports.getTrackedItem = async (id) => {
+    try {
+        return await TrackedItem.findById(id);
+    }
+    catch(err){
+        console.error(err)
+        return null;
+    }
 }
 
-exports.updateTrackedItem = (id, updatedItem) => {
-    return db.updateTrackedItem(id, updatedItem);
+exports.updateTrackedItem = async (id, updatedItem) => {
+    try {
+        return await TrackedItem.findOneAndUpdate(id, updatedItem, {new: true});
+    }
+    catch(err){
+        console.error(err)
+        return null;
+    }
 }
 
-exports.deleteTrackedItem = (id) => {
-    return db.deleteTrackedItem(id);
+exports.deleteTrackedItem = async (id) => {
+    try {
+        return await TrackedItem.findOneAndDelete(id);
+    }
+    catch(err){
+        console.error(err);
+        return null;
+    }
 }
 
