@@ -22,9 +22,12 @@ exports.startItemTrackingCron = () => {
         Promise.all(pricePomises)
             .then((results) => {
                 results.forEach((result, index) => {
-                    const pennyPrice = convertPriceStringToPennies(result);
+                    const currentPrice = convertPriceStringToPennies(result);
                     const targetPrice = trackedItems[index].targetPrice;
-                    console.log(pennyPrice, targetPrice);
+                    if (currentPrice < targetPrice) {
+                        //notify with text message and/or email
+                        console.log('THE PRICE IS CHEAP!');
+                    }
                 });
             })
             .catch((err) => {
