@@ -1,11 +1,11 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const trackedItemSchema = new mongoose.Schema({
     url: {
         type: String,
         required: true
-      },
-    price: {
+    },
+    targetPrice: {
         type: Number,
         required: true
     }
