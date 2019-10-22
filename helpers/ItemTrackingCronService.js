@@ -1,14 +1,14 @@
 const cron = require('node-cron');
-const trackedItemController = require('../controllers/TrackedItemController');
 const priceHelper = require('./PriceHelpers');
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
+const TrackedItem = mongoose.model('TrackedItem');
 
 exports.startItemTrackingCron = () => {
     cron.schedule('* * * * *', async () => {
         console.log('running a task every second');
 
-        const trackedItems = await trackedItemController.getTrackedItems();
+        const trackedItems = await TrackedItem.find();
 
         if (trackedItems === null) {
             return console.error(
@@ -23,7 +23,9 @@ exports.startItemTrackingCron = () => {
         Promise.all(pricePomises)
             .then((results) => {
                 results.forEach((result, index) => {
-                    const currentPrice = priceHelper.convertPriceStringToPennies(result);
+                    const currentPrice = priceHelper.convertPriceStringToPennies(
+                        result
+                    );
                     const currentTrackedItem = trackedItems[index];
                     const targetPrice = currentTrackedItem.targetPrice;
 
@@ -34,7 +36,6 @@ exports.startItemTrackingCron = () => {
                         const userId = currentTrackedItem.user;
                         //const user = await User.findById(userId);
                         //get telephone number from user
-
                     }
                 });
             })

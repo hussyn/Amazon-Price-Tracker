@@ -1,10 +1,8 @@
 const routes = require('express').Router();
-const trackedItemController = require('../controllers/TrackedItemController');
 const { checkLoggedIn } = require('../middleware/auth');
 
 routes.post('/', checkLoggedIn, async (req, res) => {
     const trackedItem = req.body;
-
     const userId = req.user._id;
     trackedItem.user = userId;
 
@@ -19,7 +17,6 @@ routes.post('/', checkLoggedIn, async (req, res) => {
     return res.send(addedTrackedItem);
 });
 
-//Should only get ones that the user created
 routes.get('/', checkLoggedIn, async (req, res) => {
     const userId = req.user._id;
     const trackedItems = await trackedItemController.getTrackedItemsByUser(
@@ -33,7 +30,6 @@ routes.get('/', checkLoggedIn, async (req, res) => {
     return res.send(trackedItems);
 });
 
-//TODO: can only view ones that the user created
 routes.get('/:id', checkLoggedIn, async (req, res) => {
     const id = req.params.id;
     const trackedItem = await trackedItemController.getTrackedItem(id);
@@ -75,7 +71,6 @@ routes.put('/:id', checkLoggedIn, (req, res) => {
     return res.send(updatedTrackedItem);
 });
 
-//TODO: can only delete ones that the user created
 routes.delete('/:id', checkLoggedIn, async (req, res) => {
     const id = req.params.id;
 
