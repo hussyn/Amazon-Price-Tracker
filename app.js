@@ -7,11 +7,14 @@ app.use(express.json());
 
 const mongoose = require('mongoose');
 mongoose.set('useFindAndModify', false);
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useCreateIndex', true);
+mongoose.set('useUnifiedTopology', true);
 mongoose.connect(
     process.env.DB_CONNECTION_STRING,
     { useNewUrlParser: true },
     () => {
-        console.group('connected');
+        console.group('DB is connected');
     }
 );
 
@@ -29,5 +32,5 @@ app.use('/api/user', userRoutes);
 const port = process.env.port || 3000;
 
 app.listen(port, () => {
-    console.log(`Listening on port ${port}`);
+    console.log(`Server listening on port ${port}`);
 });

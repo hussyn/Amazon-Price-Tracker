@@ -28,7 +28,7 @@ router.post('/', async (req, res) => {
     try {
         await user.save();
     } catch (err) {
-        console.log(err.message);
+        console.error(err.message);
         return res.status(400).send({ msg: err.message });
     }
 
@@ -41,7 +41,6 @@ router.post('/', async (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
-
     const { email, password } = req.body;
     if (!email || !password) {
         return res.status(400).send({ msg: 'Invalid username or password' });
@@ -53,7 +52,6 @@ router.post('/login', async (req, res) => {
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
-    console.log(password, user.password, isPasswordValid);
     if (!isPasswordValid) {
         return res.status(400).send({ msg: 'Invalid username or password' });
     }
