@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-exports.validateUser = function(req, res, next) {
+exports.checkLoggedIn = function(req, res, next) {
     //get the token from the header if present
     const token = req.headers['x-access-token'] || req.headers['authorization'];
 

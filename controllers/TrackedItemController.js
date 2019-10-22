@@ -2,10 +2,10 @@ const db = new (require("../db"))();
 const mongoose = require('mongoose');
 const TrackedItem = mongoose.model('TrackedItem');
 
-exports.getTrackedItems = async () => {
+exports.getTrackedItemsByUser = async (userId) => {
     
     try {
-        return await TrackedItem.find();
+        return await TrackedItem.find({user: userId});
     }
     catch(err){
         console.error(err)

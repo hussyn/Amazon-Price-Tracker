@@ -1,10 +1,10 @@
-const { validateUser } = require('../middleware/auth');
+const { checkLoggedIn } = require('../middleware/auth');
 const bcrypt = require('bcrypt');
 const { User, validate } = require('../models/user');
 const express = require('express');
 const router = express.Router();
 
-router.get('/current', validateUser, async (req, res) => {
+router.get('/current', checkLoggedIn, async (req, res) => {
     const user = await User.findById(req.user._id).select('-password');
     res.send(user);
 });
