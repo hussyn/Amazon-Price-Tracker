@@ -1,7 +1,8 @@
 const cron = require('node-cron');
 const trackedItemController = require('../controllers/TrackedItemController');
-const axios = require('axios');
-const cheerio = require('cheerio');
+const priceHelper = require('./PriceHelpers');
+const mongoose = require('mongoose');
+const User = mongoose.model('User');
 
 exports.startItemTrackingCron = () => {
     cron.schedule('* * * * *', async () => {
@@ -16,17 +17,24 @@ exports.startItemTrackingCron = () => {
         }
 
         const pricePomises = trackedItems.map((trackedItem) =>
-            retrievePrice(trackedItem.url)
+            priceHelper.retrievePrice(trackedItem.url)
         );
 
         Promise.all(pricePomises)
             .then((results) => {
                 results.forEach((result, index) => {
-                    const currentPrice = convertPriceStringToPennies(result);
-                    const targetPrice = trackedItems[index].targetPrice;
+                    const currentPrice = priceHelper.convertPriceStringToPennies(result);
+                    const currentTrackedItem = trackedItems[index];
+                    const targetPrice = currentTrackedItem.targetPrice;
+
                     if (currentPrice < targetPrice) {
                         //notify with text message and/or email
                         console.log('THE PRICE IS CHEAP!');
+                        //get the user
+                        const userId = currentTrackedItem.user;
+                        //const user = await User.findById(userId);
+                        //get telephone number from user
+
                     }
                 });
             })
@@ -34,23 +42,4 @@ exports.startItemTrackingCron = () => {
                 console.error(err);
             });
     });
-};
-
-const retrievePrice = async (url) => {
-    const res = await axios.get(url);
-    const $ = cheerio.load(res.data);
-    const dealPrice = $('#priceblock_dealprice').text();
-    if (dealPrice) return dealPrice;
-
-    const regularPrice = $('#priceblock_ourprice').text();
-    return regularPrice;
-};
-
-const convertPriceStringToPennies = (priceStr) => {
-    if (priceStr.startsWith('$')) {
-        priceStr = priceStr.substring(1);
-    }
-    const priceNumber = parseFloat(priceStr);
-    const priceInPennies = priceNumber * 100;
-    return priceInPennies;
 };

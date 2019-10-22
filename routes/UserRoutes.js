@@ -1,6 +1,6 @@
 const { checkLoggedIn } = require('../middleware/auth');
 const bcrypt = require('bcrypt');
-const { User, validate } = require('../models/user');
+const { User, validate } = require('../models/User');
 const express = require('express');
 const router = express.Router();
 
@@ -30,6 +30,32 @@ router.post('/', async (req, res) => {
     } catch (err) {
         console.log(err.message);
         return res.status(400).send({ msg: err.message });
+    }
+
+    const token = user.generateAuthToken();
+    res.header('x-auth-token', token).send({
+        _id: user._id,
+        username: user.username,
+        email: user.email
+    });
+});
+
+router.post('/login', async (req, res) => {
+
+    const { email, password } = req.body;
+    if (!email || !password) {
+        return res.status(400).send({ msg: 'Invalid username or password' });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+        return res.status(400).send({ msg: 'Invalid username or password' });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    console.log(password, user.password, isPasswordValid);
+    if (!isPasswordValid) {
+        return res.status(400).send({ msg: 'Invalid username or password' });
     }
 
     const token = user.generateAuthToken();

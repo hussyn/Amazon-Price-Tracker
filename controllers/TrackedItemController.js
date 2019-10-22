@@ -2,12 +2,27 @@ const db = new (require("../db"))();
 const mongoose = require('mongoose');
 const TrackedItem = mongoose.model('TrackedItem');
 
-exports.getTrackedItemsByUser = async (userId) => {
-    
+exports.isOwner = (userId, trackedItem) => {
+    return trackedItem.user === userId;
+}
+
+exports.getTrackedItems = async () => {
+
     try {
-        return await TrackedItem.find({user: userId});
+        return await TrackedItem.find();
     }
-    catch(err){
+    catch (err) {
+        console.error(err)
+        return null;
+    }
+}
+
+exports.getTrackedItemsByUser = async (userId) => {
+
+    try {
+        return await TrackedItem.find({ user: userId });
+    }
+    catch (err) {
         console.error(err)
         return null;
     }
@@ -19,7 +34,7 @@ exports.addTrackedItem = async (item) => {
         await trackedItem.save();
         return trackedItem;
     }
-    catch( err ){
+    catch (err) {
         console.error(err)
         return null;
     }
@@ -30,7 +45,7 @@ exports.getTrackedItem = async (id) => {
     try {
         return await TrackedItem.findById(id);
     }
-    catch(err){
+    catch (err) {
         console.error(err)
         return null;
     }
@@ -38,9 +53,9 @@ exports.getTrackedItem = async (id) => {
 
 exports.updateTrackedItem = async (id, updatedItem) => {
     try {
-        return await TrackedItem.findOneAndUpdate(id, updatedItem, {new: true});
+        return await TrackedItem.findOneAndUpdate(id, updatedItem, { new: true });
     }
-    catch(err){
+    catch (err) {
         console.error(err)
         return null;
     }
@@ -50,7 +65,7 @@ exports.deleteTrackedItem = async (id) => {
     try {
         return await TrackedItem.findOneAndDelete(id);
     }
-    catch(err){
+    catch (err) {
         console.error(err);
         return null;
     }

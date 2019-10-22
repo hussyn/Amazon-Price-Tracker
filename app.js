@@ -16,6 +16,7 @@ mongoose.connect(
 );
 
 require('./models/TrackedItem');
+require('./models/User');
 
 const itemTrackingCronService = require('./helpers/ItemTrackingCronService');
 itemTrackingCronService.startItemTrackingCron();
