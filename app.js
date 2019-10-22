@@ -3,6 +3,8 @@ const app = express();
 
 require('dotenv').config();
 
+app.use(express.json());
+
 const mongoose = require('mongoose');
 mongoose.set('useFindAndModify', false);
 mongoose.connect(
@@ -15,14 +17,13 @@ mongoose.connect(
 
 require('./models/TrackedItem');
 
-// parse application/x-www-form-urlencoded
-app.use(express.json());
-
 const itemTrackingCronService = require('./helpers/ItemTrackingCronService');
 itemTrackingCronService.startItemTrackingCron();
 
 const trackedItemRoutes = require('./routes/TrackedItemRoutes');
-app.use('/', trackedItemRoutes);
+const userRoutes = require('./routes/UserRoutes');
+app.use('/api/trackedItems', trackedItemRoutes);
+app.use('/api/user', userRoutes);
 
 const port = process.env.port || 3000;
 

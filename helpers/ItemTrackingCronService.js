@@ -20,6 +20,7 @@ exports.startItemTrackingCron = () => {
         );
 
         Promise.all(pricePomises)
+            .then((results) => {
                 results.forEach((result, index) => {
                     const currentPrice = convertPriceStringToPennies(result);
                     const targetPrice = trackedItems[index].targetPrice;
