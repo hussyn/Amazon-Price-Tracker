@@ -3,6 +3,7 @@ const priceHelper = require('./PriceHelpers');
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const TrackedItem = mongoose.model('TrackedItem');
+const twilioHelper = require('./TwilioHelper');
 
 exports.startItemTrackingCron = () => {
     cron.schedule('* * * * *', async () => {
@@ -22,7 +23,7 @@ exports.startItemTrackingCron = () => {
 
         Promise.all(pricePomises)
             .then((results) => {
-                results.forEach((result, index) => {
+                results.forEach(async (result, index) => {
                     const currentPrice = priceHelper.convertPriceStringToPennies(
                         result
                     );
@@ -34,8 +35,12 @@ exports.startItemTrackingCron = () => {
                         console.log('THE PRICE IS CHEAP!');
                         //get the user
                         const userId = currentTrackedItem.user;
-                        //const user = await User.findById(userId);
+                        const user = await User.findById(userId);
                         //get telephone number from user
+                        twilioHelper.sendTrackedItemMessage(
+                            currentTrackedItem,
+                            user.phone
+                        );
                     }
                 });
             })
