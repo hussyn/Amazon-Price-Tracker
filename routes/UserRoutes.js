@@ -9,7 +9,7 @@ router.get('/current', checkLoggedIn, async (req, res) => {
     res.send(user);
 });
 
-router.post('/', async (req, res) => {
+router.post('/register', async (req, res) => {
     // validate the request body first
     const { error } = validate(req.body);
     if (error) return res.status(400).send({ msg: error.details[0].message });
@@ -20,7 +20,8 @@ router.post('/', async (req, res) => {
     user = new User({
         username: req.body.username,
         password: req.body.password,
-        email: req.body.email
+        email: req.body.email,
+        phone: req.body.phone
     });
 
     user.password = await bcrypt.hash(user.password, 10);
@@ -36,7 +37,8 @@ router.post('/', async (req, res) => {
     res.header('x-auth-token', token).send({
         _id: user._id,
         username: user.username,
-        email: user.email
+        email: user.email,
+        token
     });
 });
 
@@ -60,7 +62,8 @@ router.post('/login', async (req, res) => {
     res.header('x-auth-token', token).send({
         _id: user._id,
         username: user.username,
-        email: user.email
+        email: user.email,
+        token
     });
 });
 

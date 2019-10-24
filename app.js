@@ -21,7 +21,7 @@ mongoose.connect(
 require('./models/TrackedItem');
 require('./models/User');
 
-const itemTrackingCronService = require('./helpers/ItemTrackingCronService');
+const itemTrackingCronService = require('./utils/ItemTrackingCronService');
 itemTrackingCronService.startItemTrackingCron();
 
 const trackedItemRoutes = require('./routes/TrackedItemRoutes');
@@ -29,7 +29,7 @@ const userRoutes = require('./routes/UserRoutes');
 app.use('/api/trackedItems', trackedItemRoutes);
 app.use('/api/user', userRoutes);
 
-const port = process.env.port || 3000;
+const port = process.env.port || 3500;
 
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);

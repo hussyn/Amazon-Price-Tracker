@@ -26,7 +26,7 @@ const UserSchema = new mongoose.Schema({
         type: String,
         validate: {
             validator: function(v) {
-                return /\d{3}-\d{3}-\d{4}/.test(v);
+                return /\d{11}/.test(v);
             },
             message: (props) => `${props.value} is not a valid phone number!`
         },
@@ -61,6 +61,10 @@ function validateUser(user) {
         password: Joi.string()
             .min(3)
             .max(255)
+            .required(),
+        phone: Joi.string()
+            .min(11)
+            .max(11)
             .required()
     });
     return schema.validate(user);

@@ -17,9 +17,9 @@ exports.startItemTrackingCron = () => {
             );
         }
 
-        const pricePomises = trackedItems.map((trackedItem) =>
-            priceHelper.retrievePrice(trackedItem.url)
-        );
+        // const pricePomises = trackedItems.map((trackedItem) =>
+        //     priceHelper.retrievePrice(trackedItem.url)
+        // );
 
         Promise.all(pricePomises)
             .then((results) => {
@@ -37,10 +37,10 @@ exports.startItemTrackingCron = () => {
                         const userId = currentTrackedItem.user;
                         const user = await User.findById(userId);
                         //get telephone number from user
-                        twilioHelper.sendTrackedItemMessage(
-                            currentTrackedItem,
-                            user.phone
-                        );
+                        // twilioHelper.sendTrackedItemMessage(
+                        //     currentTrackedItem,
+                        //     user.phone
+                        // );
                     }
                 });
             })
