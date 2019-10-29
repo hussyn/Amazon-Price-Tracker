@@ -1,9 +1,14 @@
 const routes = require('express').Router();
-const { checkLoggedIn } = require('../middleware/auth');
+const { checkLoggedIn, checkLoggedInOrAnonymous } = require('../middleware/auth');
 
-routes.post('/', checkLoggedIn, async (req, res) => {
+routes.post('/', checkLoggedInOrAnonymous, async (req, res) => {
     const trackedItem = req.body;
-    const userId = req.user._id;
+
+    if (!trackedItem.phone) {
+        return res.status(400).send({ msg: 'Phone number is required' });
+    }
+
+    const userId = req.user ? req.user._id : null; //can be null
     trackedItem.user = userId;
 
     const addedTrackedItem = await trackedItemController.addTrackedItem(

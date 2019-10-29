@@ -9,11 +9,27 @@ const trackedItemSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    recentPrice: {
+        type: Number
+    },
+    name: {
+        type: String,
+        required: true
+    },
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
-    }
+        ref: 'User'
+    },
+    phone: {
+        type: String,
+        validate: {
+            validator: function (v) {
+                return /\d{11}/.test(v);
+            },
+            message: (props) => `${props.value} is not a valid phone number!`
+        },
+        required: [true, 'User phone number required']
+    },
 });
 
 module.exports = mongoose.model('TrackedItem', trackedItemSchema);

@@ -25,19 +25,18 @@ const UserSchema = new mongoose.Schema({
     phone: {
         type: String,
         validate: {
-            validator: function(v) {
+            validator: function (v) {
                 return /\d{11}/.test(v);
             },
             message: (props) => `${props.value} is not a valid phone number!`
         },
-        required: [true, 'User phone number required']
     },
     //give different access rights if admin or not
     isAdmin: { type: Boolean, default: false }
 });
 
 //custom method to generate authToken
-UserSchema.methods.generateAuthToken = function() {
+UserSchema.methods.generateAuthToken = function () {
     const token = jwt.sign(
         { _id: this._id, isAdmin: this.isAdmin }, //TODO: will include more info
         process.env.PRIVATE_KEY

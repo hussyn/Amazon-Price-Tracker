@@ -9,11 +9,12 @@ exports.startItemTrackingCron = () => {
     cron.schedule('* * * * *', async () => {
         console.log('running a task every second');
 
-        const trackedItems = await TrackedItem.find();
+        const trackedItems = await TrackedItem.find().populate('user');
+        console.log(trackedItems);
 
         if (trackedItems === null) {
             return console.error(
-                "Something went wrong. Couldn't retrieve tracked items from the DB!"
+                "Something went wrong. Failed to retrieve tracked items from the DB!"
             );
         }
 
@@ -27,21 +28,10 @@ exports.startItemTrackingCron = () => {
                     const currentPrice = priceHelper.convertPriceStringToPennies(
                         result
                     );
-                    const currentTrackedItem = trackedItems[index];
-                    const targetPrice = currentTrackedItem.targetPrice;
 
-                    if (currentPrice < targetPrice) {
-                        //notify with text message and/or email
-                        console.log('THE PRICE IS CHEAP!');
-                        //get the user
-                        const userId = currentTrackedItem.user;
-                        const user = await User.findById(userId);
-                        //get telephone number from user
-                        // twilioHelper.sendTrackedItemMessage(
-                        //     currentTrackedItem,
-                        //     user.phone
-                        // );
-                    }
+                    //don't wait for a response, just keep on going :)
+                    updateCurrentPriceAndNotify(trackedItems[index], currentPrice)
+
                 });
             })
             .catch((err) => {
@@ -49,3 +39,26 @@ exports.startItemTrackingCron = () => {
             });
     });
 };
+
+const updateCurrentPriceAndNotify = async (trackedItem, currentPrice) => {
+
+    trackedItem.recentPrice = currentPrice;
+    const username = trackedItem.user ? trackedItem.user.username : 'anonymous';
+    try {
+        await trackedItem.save();
+    }
+    catch (err) {
+        console.error(`Failed to save recent price for ${trackedItem.name} for user ${username}`);
+    }
+
+    const targetPrice = trackedItem.targetPrice;
+
+    if (currentPrice < targetPrice) {
+        console.log(`${trackedItem.name} for ${username} is below the threshold. Notifying... `);
+        twilioHelper.sendTrackedItemMessage(
+            trackedItem
+        );
+    }
+
+
+}
