@@ -5,6 +5,7 @@ const saveToken = (token) => {
 };
 
 const isLoggedIn = () => {
+    //TODO: can check for expiration
     return !!localStorage.getItem('user_token');
 };
 
@@ -42,6 +43,8 @@ const fetchWithAuthHeader = async (url, options) => {
 }
 
 checkStatus = (response) => {
+    //TODO: if you ever get unauthorized then redirect to login
+
     if (!(response.status >= 200 && response.status < 300)) {
         const error = new Error(response.statusText)
         error.response = response;

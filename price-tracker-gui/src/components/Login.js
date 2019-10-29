@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { authenticationService } from '../utils/Auth';
 
 export default function Login(props) {
@@ -10,20 +11,15 @@ export default function Login(props) {
         e.preventDefault();
         setLoading(true);
         try {
-            const res = await fetch('/api/user/login', {
-                method: 'POST',
-                body: JSON.stringify({
-                    email,
-                    password
-                }
-                )
+            const res = await axios.post('/api/user/login', {
+                email,
+                password
             });
-            const data = await res.json();
             setLoading(false);
-            authenticationService.saveToken(data.token);
+            authenticationService.saveToken(res.data.token);
             props.history.push('/');
         } catch (err) {
-            console.error(err.response.data.msg); //TODO: check that this still makes sense with new fetch wrapper
+            console.error(err.response.data.msg);
             setLoading(false);
         }
     };

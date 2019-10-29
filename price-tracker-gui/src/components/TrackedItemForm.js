@@ -1,5 +1,6 @@
 import React from 'react'
-import { fetchWithAuthHeader } from "../utils/Auth";
+import axios from "axios";
+
 export default function TrackedItemForm(props) {
 
     const [phone, setPhone] = React.useState(props.phone);
@@ -16,7 +17,7 @@ export default function TrackedItemForm(props) {
         console.log(phone, price, url);
         const trackedItem = { phone, price, url };
         try {
-            const data = await fetchWithAuthHeader('/api/trackedItem', { method: 'POST', body: trackedItem })
+            const res = await axios.post('/api/trackedItem', trackedItem)
             //TODO: feedback to user on success
             reset();
         } catch (err) {
