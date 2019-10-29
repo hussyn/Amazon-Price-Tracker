@@ -17,9 +17,9 @@ exports.startItemTrackingCron = () => {
             );
         }
 
-        // const pricePomises = trackedItems.map((trackedItem) =>
-        //     priceHelper.retrievePrice(trackedItem.url)
-        // );
+        const pricePomises = trackedItems.map((trackedItem) =>
+            priceHelper.retrievePrice(trackedItem.url)
+        );
 
         Promise.all(pricePomises)
             .then((results) => {
