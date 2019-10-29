@@ -1,8 +1,11 @@
 const jwt = require('jsonwebtoken');
 
+//TODO: update to use bearer <token> as token header
+//TODO: add expiration to token
 exports.checkLoggedIn = function (req, res, next) {
-    //get the token from the header if present
-    const token = req.headers['x-access-token'] || req.headers['authorization'];
+    const rawHeader = req.headers['x-access-token'] || req.headers['authorization'];
+    const parsedHeader = rawHeader.split(" ");
+    const token = parsedHeader[1];
 
     if (!token)
         return res

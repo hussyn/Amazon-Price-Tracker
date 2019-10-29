@@ -22,7 +22,7 @@ require('./models/TrackedItem');
 require('./models/User');
 
 const itemTrackingCronService = require('./utils/ItemTrackingCronService');
-itemTrackingCronService.startItemTrackingCron();
+//itemTrackingCronService.startItemTrackingCron();
 
 const trackedItemRoutes = require('./routes/TrackedItemRoutes');
 const userRoutes = require('./routes/UserRoutes');
