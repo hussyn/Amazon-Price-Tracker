@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import { authenticationService } from '../utils/Auth';
 
 export default function Register(props) {
@@ -13,14 +12,18 @@ export default function Register(props) {
         e.preventDefault();
         setLoading(true);
         try {
-            const res = await axios.post('/api/user/register', {
-                email,
-                password,
-                username,
-                phone
+            const res = await fetch('/api/user/register', {
+                method: 'POST',
+                body: JSON.stringify({
+                    email,
+                    password,
+                    username,
+                    phone
+                })
             });
+            const data = await res.json();
             setLoading(false);
-            authenticationService.saveToken(res.data.token);
+            authenticationService.saveToken(data.token);
             props.history.push('/');
         } catch (err) {
             console.error(err.response.data.msg);

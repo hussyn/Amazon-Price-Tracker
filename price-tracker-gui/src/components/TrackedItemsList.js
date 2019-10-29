@@ -1,11 +1,11 @@
 import React from 'react';
-import axios from 'axios';
-
+import { fetchWithAuthHeader } from "../utils/Auth";
 export default function TrackedItemsList() {
     const getTrackedItems = async () => {
         try {
-            const res = await axios.get('/api/trackedItems');
-            console.log(res.data);
+            const data = await fetchWithAuthHeader('/api/trackedItems', { method: 'GET' })
+
+            console.log(data);
         } catch (err) {
             console.log(err);
         }

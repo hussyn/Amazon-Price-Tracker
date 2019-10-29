@@ -9,7 +9,6 @@ import Home from './components/Home';
 import ProtectedRoute from './components/ProtectedRoute';
 import Logout from './components/Logout';
 import TrackedItemsList from './components/TrackedItemsList';
-import axios from 'axios';
 import { authenticationService } from './utils/Auth';
 
 
