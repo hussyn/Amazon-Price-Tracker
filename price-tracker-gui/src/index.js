@@ -12,9 +12,6 @@ import TrackedItemsList from './components/TrackedItemsList';
 import axios from 'axios';
 import { authenticationService } from './utils/Auth';
 
-axios.defaults.headers.common[
-    'Authorization'
-] = authenticationService.getToken();
 
 const routing = (
     <Router>
