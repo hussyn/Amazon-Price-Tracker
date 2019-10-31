@@ -3,21 +3,20 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 import { Route, BrowserRouter as Router } from 'react-router-dom';
-import Login from './components/Login';
-import Register from './components/Register';
-import Home from './components/Home';
+import Home from './components/pages/Home';
 import ProtectedRoute from './components/ProtectedRoute';
 import Logout from './components/Logout';
 import TrackedItemsList from './components/TrackedItemsList';
-import { authenticationService } from './utils/Auth';
+import LoginPage from './components/pages/LoginPage';
+import RegisterPage from './components/pages/RegisterPage';
 
 
 const routing = (
     <Router>
         <div className="container">
             <Route path="/" exact component={Home} />
-            <Route path="/login" component={Login} />
-            <Route path="/register" component={Register} />
+            <Route path="/login" component={LoginPage} />
+            <Route path="/register" component={RegisterPage} />
             <ProtectedRoute path="/logout" component={Logout} />
             <ProtectedRoute path="/myItems" component={TrackedItemsList} />
         </div>

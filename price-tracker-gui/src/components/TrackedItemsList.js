@@ -1,12 +1,18 @@
 import React from 'react';
 import { fetchWithAuthHeader } from "../utils/Auth";
-export default function TrackedItemsList() {
+import { withRouter } from "react-router";
+
+const TrackedItemsList = () => {
     const getTrackedItems = async () => {
         try {
             const data = await fetchWithAuthHeader('/api/trackedItems', { method: 'GET' })
 
             console.log(data);
         } catch (err) {
+            if (err.response.status === 401) {
+                //TODO: navigate to login page
+            }
+            console.error(err.response.data.msg);
             console.log(err);
         }
     };
@@ -19,3 +25,5 @@ export default function TrackedItemsList() {
         </div>
     );
 }
+
+export default withRouter(TrackedItemsList);

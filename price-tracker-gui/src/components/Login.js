@@ -1,8 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 import { authenticationService } from '../utils/Auth';
+import { withRouter } from "react-router";
 
-export default function Login(props) {
+const Login = (props) => {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [loading, setLoading] = React.useState(false);
@@ -48,3 +49,6 @@ export default function Login(props) {
         </form>
     );
 }
+
+export default withRouter(Login);
+

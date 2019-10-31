@@ -1,8 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 import { authenticationService } from '../utils/Auth';
+import { withRouter } from "react-router";
 
-export default function Register(props) {
+const Register = (props) => {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [username, setUsername] = React.useState('');
@@ -68,3 +69,6 @@ export default function Register(props) {
         </form>
     );
 }
+
+export default withRouter(Register);
+

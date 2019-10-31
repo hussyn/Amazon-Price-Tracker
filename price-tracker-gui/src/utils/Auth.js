@@ -36,15 +36,11 @@ const fetchWithAuthHeader = async (url, options) => {
         ...options
     });
     checkStatus(res);
-    return await res.json(); //TODO:  caller will need to handle exception...?
-    //TODO: check all of the return scenarions
-
+    return await res.json(); //will either return or throw error based on status
 
 }
 
-checkStatus = (response) => {
-    //TODO: if you ever get unauthorized then redirect to login
-
+const checkStatus = (response) => {
     if (!(response.status >= 200 && response.status < 300)) {
         const error = new Error(response.statusText)
         error.response = response;
