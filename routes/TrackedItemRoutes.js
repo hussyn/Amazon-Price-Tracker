@@ -10,7 +10,6 @@ routes.post('/', checkLoggedInOrAnonymous, async (req, res) => {
     const user = req.user ? req.user._id : null;
     console.log(user);
     const trackedItem = new TrackedItem({ ...req.body, user });
-    console.log(trackedItem);
     try {
         await trackedItem.save();
         return res.send(trackedItem);

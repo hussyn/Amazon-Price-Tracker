@@ -18,7 +18,7 @@ const getToken = () => {
 };
 
 const getProfile = () => {
-    return decode(this.getToken());
+    return decode(getToken());
 };
 
 const fetchWithAuthHeader = async (url, options) => {
@@ -27,8 +27,8 @@ const fetchWithAuthHeader = async (url, options) => {
         'Content-Type': 'application/json'
     };
 
-    if (this.loggedIn()) {
-        headers['Authorization'] = 'Bearer ' + this.getToken();
+    if (isLoggedIn()) {
+        headers['Authorization'] = 'Bearer ' + getToken();
     }
 
     const res = await fetch(url, {
