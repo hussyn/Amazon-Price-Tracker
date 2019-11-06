@@ -10,7 +10,6 @@ import TrackedItemsList from './components/TrackedItemsList';
 import LoginPage from './components/pages/LoginPage';
 import RegisterPage from './components/pages/RegisterPage';
 
-
 const routing = (
     <Router>
         <div className="container">

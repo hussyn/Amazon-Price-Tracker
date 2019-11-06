@@ -1,17 +1,21 @@
 const routes = require('express').Router();
-const { checkLoggedIn, checkLoggedInOrAnonymous } = require('../middleware/auth');
+const {
+    checkLoggedIn,
+    checkLoggedInOrAnonymous
+} = require('../middleware/auth');
 const mongoose = require('mongoose');
 const TrackedItem = mongoose.model('TrackedItem');
 
 routes.post('/', checkLoggedInOrAnonymous, async (req, res) => {
     const user = req.user ? req.user._id : null;
-
-    const trackedItem = new trackedItem({ ...req.body, user });
-
+    console.log(user);
+    const trackedItem = new TrackedItem({ ...req.body, user });
+    console.log(trackedItem);
     try {
         await trackedItem.save();
         return res.send(trackedItem);
     } catch (err) {
+        console.error(err.message);
         return res.status(400).send({ msg: 'Failed to save tracked item' }); //return TODO: specific mongodb message
     }
 });

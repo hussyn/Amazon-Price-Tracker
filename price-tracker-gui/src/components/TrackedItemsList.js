@@ -1,11 +1,16 @@
 import React from 'react';
-import { fetchWithAuthHeader } from "../utils/Auth";
-import { withRouter } from "react-router";
+import { withRouter } from 'react-router';
+import { authenticationService } from '../utils/Auth';
 
 const TrackedItemsList = () => {
     const getTrackedItems = async () => {
         try {
-            const data = await fetchWithAuthHeader('/api/trackedItems', { method: 'GET' })
+            const data = await authenticationService.fetchWithAuthHeader(
+                '/api/trackedItems',
+                {
+                    method: 'GET'
+                }
+            );
 
             console.log(data);
         } catch (err) {
@@ -24,6 +29,6 @@ const TrackedItemsList = () => {
             <h1>Your Tracked Expenses</h1>
         </div>
     );
-}
+};
 
 export default withRouter(TrackedItemsList);

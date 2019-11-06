@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import TrackedItemForm from './TrackedItemForm';
+import TrackedItemForm from '../TrackedItemForm';
 
 export default function Home() {
     return (
