@@ -1,21 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import TrackedItemForm from '../TrackedItemForm';
-
+import { authenticationService } from '../../utils//Auth';
+import Header from '../Header';
+import TrackedItemsList from '../TrackedItemsList';
 export default function Home() {
+    const user = authenticationService.getUser();
+
     return (
         <div>
+            <Header user={user} />
             <h1>Welcome to Amazon Price Tracker</h1>
-            <TrackedItemForm />
-            {/*TODO: If logged in don't show login/register buttons */}
-
-            <Link className="link-btn" to="/login">
-                Login
-            </Link>
-            <Link className="link-btn" to="/register">
-                Register
-            </Link>
-            {/*TODO: If logged in then show trackedItems list */}
+            <TrackedItemForm user={user} />
+            {user && <TrackedItemsList />}
         </div>
     );
 }

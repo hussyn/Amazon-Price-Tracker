@@ -8,18 +8,18 @@ const TrackedItem = mongoose.model('TrackedItem');
 
 routes.post('/', checkLoggedInOrAnonymous, async (req, res) => {
     const user = req.user ? req.user._id : null;
-    console.log(user);
     const trackedItem = new TrackedItem({ ...req.body, user });
     try {
         await trackedItem.save();
         return res.send(trackedItem);
     } catch (err) {
         console.error(err.message);
-        return res.status(400).send({ msg: 'Failed to save tracked item' }); //return TODO: specific mongodb message
+        return res.status(400).send({ msg: 'Failed to save tracked item' }); //TODO: return specific mongodb message
     }
 });
 
 routes.get('/', checkLoggedIn, async (req, res) => {
+    console.log('getting user items');
     const user = req.user._id;
     try {
         const trackedItems = await TrackedItem.find({ user });

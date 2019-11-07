@@ -9,7 +9,7 @@ import Logout from './components/Logout';
 import TrackedItemsList from './components/TrackedItemsList';
 import LoginPage from './components/pages/LoginPage';
 import RegisterPage from './components/pages/RegisterPage';
-
+import Header from './components/Header';
 const routing = (
     <Router>
         <div className="container">

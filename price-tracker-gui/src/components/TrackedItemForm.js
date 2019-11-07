@@ -1,8 +1,8 @@
 import React from 'react';
 import { authenticationService } from '../utils/Auth';
 
-export default function TrackedItemForm(props) {
-    const [phone, setPhone] = React.useState(props.phone || '');
+export default function TrackedItemForm({ user }) {
+    const [phone, setPhone] = React.useState(user ? user.phone : '');
     const [targetPrice, setTargetPrice] = React.useState(0);
     const [url, setUrl] = React.useState('');
     const [name, setName] = React.useState('');
@@ -11,7 +11,7 @@ export default function TrackedItemForm(props) {
         setTargetPrice(0);
         setUrl('');
         setName('');
-        setPhone(props.phone || '');
+        setPhone(user.phone || '');
     };
 
     const submitTrackedItem = async (e) => {
@@ -37,8 +37,9 @@ export default function TrackedItemForm(props) {
     return (
         <div>
             <form onSubmit={submitTrackedItem}>
-                <label htmlFor="name">Name</label>
+                <label htmlFor="name">Item Name</label>
                 <input
+                    name="name"
                     type="text"
                     placeolder="Cool Amazon Item"
                     value={name}

@@ -25,19 +25,19 @@ const UserSchema = new mongoose.Schema({
     phone: {
         type: String,
         validate: {
-            validator: function (v) {
+            validator: function(v) {
                 return /\d{11}/.test(v);
             },
             message: (props) => `${props.value} is not a valid phone number!`
-        },
+        }
     },
     //give different access rights if admin or not
     isAdmin: { type: Boolean, default: false }
 });
 
-UserSchema.methods.generateAuthToken = function () {
+UserSchema.methods.generateAuthToken = function() {
     const token = jwt.sign(
-        { _id: this._id },
+        { _id: this._id, phone: this.phone, username: this.username },
         process.env.PRIVATE_KEY
     );
     return token;

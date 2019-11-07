@@ -17,8 +17,12 @@ const getToken = () => {
     return localStorage.getItem('user_token');
 };
 
-const getProfile = () => {
-    return decode(getToken());
+const getUser = () => {
+    try {
+        return decode(getToken());
+    } catch (err) {
+        return null;
+    }
 };
 
 const fetchWithAuthHeader = async (url, options) => {
@@ -52,6 +56,6 @@ export const authenticationService = {
     isLoggedIn,
     logout,
     getToken,
-    getProfile,
+    getUser,
     fetchWithAuthHeader
 };
